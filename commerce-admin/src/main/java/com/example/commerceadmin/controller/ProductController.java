@@ -33,7 +33,7 @@ public class ProductController {
         return "redirect:/products/" + savedProduct.getId();
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public String update(@PathVariable("id") Long id, UpdateProductDto productDto) {
         Product savedProduct = productService.update(id, productDto);
         return "redirect:/products/" + savedProduct.getId();
