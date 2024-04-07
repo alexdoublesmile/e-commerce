@@ -12,9 +12,5 @@
             <li><strong>Title</strong>: <span data-th-text="${product.title}"></span></li>
             <li><strong>Details</strong>: <span data-th-text="${product.details}"></span></li>
         </ul>
-        <form method="get" data-th-action=
-        "@{/products/{productId}/edit(productId=${product.getId()})}">
-            <button type="submit">Edit</button>
-        </form>
     </body>
 </html>

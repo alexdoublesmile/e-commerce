@@ -23,6 +23,12 @@
                        data-th-text="${product.title}"
                     ></a>
                 </td>
+                <td>
+                    <form method="get" data-th-action=
+                            "@{/products/{productId}/edit(productId=${product.getId()})}">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
