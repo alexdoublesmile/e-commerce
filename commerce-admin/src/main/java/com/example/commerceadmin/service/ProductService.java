@@ -1,6 +1,7 @@
 package com.example.commerceadmin.service;
 
 import com.example.commerceadmin.model.dto.CreateProductDto;
+import com.example.commerceadmin.model.dto.UpdateProductDto;
 import com.example.commerceadmin.model.entity.Product;
 import com.example.commerceadmin.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,13 @@ public class ProductService {
 
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow();
+    }
+
+    public Product update(Long id, UpdateProductDto productDto) {
+        final Product productFromDB = productRepository.findById(id).orElseThrow();
+        productFromDB.setTitle(productDto.getTitle());
+        productFromDB.setDetails(productDto.getDetails());
+
+        return productFromDB;
     }
 }
