@@ -35,15 +35,14 @@ public class ProductController {
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Long id, UpdateProductDto productDto) {
-        Product savedProduct = productService.update(id, productDto);
-        return "redirect:/products/" + savedProduct.getId();
+        productService.update(id, productDto);
+        return "redirect:/products";
     }
 
     @PostMapping("/{id:\\d+}/delete")
-    public String delete(@PathVariable("id") Long id, Model model) {
+    public String delete(@PathVariable("id") Long id) {
         productService.delete(id);
-        model.addAttribute("productList", productService.findAll());
-        return "product/list";
+        return "redirect:/products";
     }
 
     @GetMapping("/add")
