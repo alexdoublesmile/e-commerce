@@ -29,6 +29,12 @@
                         <button type="submit">Edit</button>
                     </form>
                 </td>
+                <td>
+                    <form method="post" data-th-action=
+                            "@{/products/{productId}/delete(productId=${product.getId()})}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
