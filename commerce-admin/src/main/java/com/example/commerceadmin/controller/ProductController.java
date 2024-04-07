@@ -31,7 +31,7 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public String findById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("product", productService.findById(id));
         return "product/item";
