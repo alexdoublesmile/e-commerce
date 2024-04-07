@@ -1,5 +1,6 @@
 package com.example.commerceadmin.controller;
 
+import com.example.commerceadmin.model.dto.CreateProductDto;
 import com.example.commerceadmin.model.entity.Product;
 import com.example.commerceadmin.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,16 @@ public class ProductController {
     public String findAll(Model model) {
         model.addAttribute("productList", productService.findAll());
         return "product/list";
+    }
+
+    @GetMapping("/add")
+    public String getAddProductPage() {
+        return "product/add";
+    }
+
+    @PostMapping
+    public String save(CreateProductDto productDto) {
+        Product savedProduct = productService.save(productDto);
+        return "redirect:/products";
     }
 }
