@@ -1,11 +1,11 @@
 package com.example.commerceadmin.controller;
 
+import com.example.commerceadmin.model.entity.Product;
 import com.example.commerceadmin.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
