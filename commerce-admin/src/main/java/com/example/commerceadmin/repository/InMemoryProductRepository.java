@@ -1,11 +1,13 @@
 package com.example.commerceadmin.repository;
 
 import com.example.commerceadmin.model.entity.Product;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Repository
 public class InMemoryProductRepository implements ProductRepository {
     private final List<Product> productList = new CopyOnWriteArrayList<>();
 
