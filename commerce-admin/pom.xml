@@ -65,7 +65,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<!-- for single JAR -->
+							<!-- for "fat" JAR (with deps) -->
 							<goal>repackage</goal>
 						</goals>
 					</execution>
