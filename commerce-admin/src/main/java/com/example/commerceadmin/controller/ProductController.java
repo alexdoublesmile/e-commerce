@@ -4,7 +4,9 @@ import com.example.commerceadmin.model.dto.CreateProductDto;
 import com.example.commerceadmin.model.dto.UpdateProductDto;
 import com.example.commerceadmin.model.entity.Product;
 import com.example.commerceadmin.service.ProductService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,8 +61,13 @@ public class ProductController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public String noElement(NoSuchElementException ex, Model model) {
+    public String noElement(
+            NoSuchElementException ex,
+            Model model,
+            HttpServletResponse response
+    ) {
+        response.setStatus(HttpStatus.NOT_FOUND.value());
         model.addAttribute("error", ex.getMessage());
-        return "error/404";
+        return "error/404"; 
     }
 }
