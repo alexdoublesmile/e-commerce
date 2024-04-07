@@ -39,6 +39,13 @@ public class ProductController {
         return "redirect:/products/" + savedProduct.getId();
     }
 
+    @PostMapping("/{id:\\d+}/delete")
+    public String delete(@PathVariable("id") Long id, Model model) {
+        productService.delete(id);
+        model.addAttribute("productList", productService.findAll());
+        return "product/list";
+    }
+
     @GetMapping("/add")
     public String getAddProductPage() {
         return "product/add";

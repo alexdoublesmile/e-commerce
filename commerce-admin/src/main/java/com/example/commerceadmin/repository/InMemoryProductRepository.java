@@ -38,6 +38,11 @@ public class InMemoryProductRepository implements ProductRepository {
                 .findFirst();
     }
 
+    @Override
+    public void delete(Long id) {
+        productList.removeIf(product -> product.getId().equals(id));
+    }
+
     private List<Product> getDefaultProductList() {
         List<Product> data = new ArrayList<>();
         data.add(new Product(sequence.incrementAndGet(), "Milk", "milk description"));
