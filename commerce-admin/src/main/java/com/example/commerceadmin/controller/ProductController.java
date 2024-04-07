@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -54,5 +56,11 @@ public class ProductController {
     public String getEditProductPage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("product", productService.findById(id));
         return "product/edit";
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public String noElement(NoSuchElementException ex, Model model) {
+        model.addAttribute("error", ex.getMessage());
+        return "error/404";
     }
 }
