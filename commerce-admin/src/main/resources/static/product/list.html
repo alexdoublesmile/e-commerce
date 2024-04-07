@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list &ndash; Shop</title>
+</head>
+    <body>
+    <h1>Product list</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-th-each="product : ${productList}">
+                <td data-th-text="${product.id}"></td>
+                <td>
+                    <a data-th-href=
+                    "@{/products/{productId}(productId=${product.id})}"
+                    ></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
