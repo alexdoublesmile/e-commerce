@@ -9,8 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -32,13 +36,38 @@ public class ProductController {
     }
 
     @PostMapping
-    public String save(CreateProductDto productDto) {
+    public String save(
+            @Validated CreateProductDto productDto,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            final List<String> errorList = bindingResult.getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .toList();
+            model.addAttribute("payload", productDto);
+            model.addAttribute("errors", errorList);
+            return "product/add";
+        }
         Product savedProduct = productService.save(productDto);
         return "redirect:/products/" + savedProduct.getId();
     }
 
     @PostMapping("/{id}")
-    public String update(@PathVariable("id") Long id, UpdateProductDto productDto) {
+    public String update(
+            @PathVariable("id") Long id,
+            @Validated UpdateProductDto productDto,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            final List<String> errorList = bindingResult.getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .toList();
+            model.addAttribute("payload", productDto);
+            model.addAttribute("errors", errorList);
+            return "product/edit";
+        }
         productService.update(id, productDto);
         return "redirect:/products";
     }
