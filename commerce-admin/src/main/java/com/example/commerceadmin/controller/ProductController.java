@@ -30,4 +30,10 @@ public class ProductController {
         Product savedProduct = productService.save(productDto);
         return "redirect:/products";
     }
+
+    @GetMapping("/{id}")
+    public String findById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("product", productService.findById(id));
+        return "product/item";
+    }
 }

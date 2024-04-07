@@ -22,4 +22,8 @@ public class ProductService {
                 new Product(null, productDto.getTitle(), productDto.getDetails()))
                 .orElseThrow();
     }
+
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElseThrow();
+    }
 }
