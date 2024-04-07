@@ -59,15 +59,4 @@ public class ProductController {
         model.addAttribute("product", productService.findById(id));
         return "product/edit";
     }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public String noElement(
-            NoSuchElementException ex,
-            Model model,
-            HttpServletResponse response
-    ) {
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        model.addAttribute("error", ex.getMessage());
-        return "error/404"; 
-    }
 }
