@@ -7,14 +7,20 @@
     <body>
         <a data-th-href="@{/products}">&larr; Back to Product list</a>
         <h1>Add Product</h1>
+        <div style="color: red" data-th-if="${errors}">
+            <h2>Invalid input</h2>
+            <ul>
+                <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+            </ul>
+        </div>
         <form method="post" data-th-action="@{/products}">
             <label>
                 Title:<br>
-                <input type="text" name="title">
+                <input type="text" name="title" data-th-value="${payload?.title}">
             </label><br>
             <label>
                 Details:<br>
-                <textarea name="details"></textarea>
+                <textarea name="details" data-th-text="${payload?.details}"></textarea>
             </label><br>
             <button type="submit">Add</button>
         </form>

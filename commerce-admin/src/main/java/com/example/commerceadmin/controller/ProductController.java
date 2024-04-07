@@ -64,6 +64,7 @@ public class ProductController {
                     .stream()
                     .map(ObjectError::getDefaultMessage)
                     .toList();
+            model.addAttribute("product", productService.findById(id));
             model.addAttribute("payload", productDto);
             model.addAttribute("errors", errorList);
             return "product/edit";
