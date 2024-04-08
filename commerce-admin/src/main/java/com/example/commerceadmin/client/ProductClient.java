@@ -7,7 +7,7 @@ import com.example.commerceadmin.model.entity.Product;
 import java.util.List;
 
 public interface ProductClient {
-    List<Product> findAll();
+    List<Product> findAll(String filter);
 
     Product findById(Long id);
 

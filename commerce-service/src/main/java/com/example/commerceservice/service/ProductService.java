@@ -25,7 +25,7 @@ public class ProductService {
         System.out.println(filter);
         return filter == null || filter.isBlank()
                 ? productRepository.findAll()
-                : productRepository.findAllByTitleLikeIgnoreCase(filter);
+                : productRepository.findAllByFilter("%" + filter + "%");
     }
 
     @Transactional
