@@ -1,7 +1,6 @@
 package com.example.commerceservice.repository;
 
 import com.example.commerceservice.model.entity.Product;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +8,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
-public class InMemoryProductRepository implements ProductRepository {
+public class InMemoryProductRepository {
     private final List<Product> productList = new CopyOnWriteArrayList<>();
     private final AtomicLong sequence = new AtomicLong(0L);
 
@@ -18,12 +16,10 @@ public class InMemoryProductRepository implements ProductRepository {
         productList.addAll(getDefaultProductList());
     }
 
-    @Override
     public List<Product> findAll() {
         return new ArrayList<>(productList);
     }
 
-    @Override
     public Optional<Product> save(Product product) {
         product.setId(sequence.incrementAndGet());
         productList.add(product);
@@ -31,14 +27,12 @@ public class InMemoryProductRepository implements ProductRepository {
         return findById(product.getId());
     }
 
-    @Override
     public Optional<Product> findById(Long id) {
         return productList.stream()
                 .dropWhile(product -> !product.getId().equals(id))
                 .findFirst();
     }
 
-    @Override
     public void delete(Long id) {
         productList.removeIf(product -> product.getId().equals(id));
     }

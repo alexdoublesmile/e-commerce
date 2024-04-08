@@ -5,22 +5,15 @@ import com.example.commerceservice.model.dto.UpdateProductDto;
 import com.example.commerceservice.model.entity.Product;
 import com.example.commerceservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +23,9 @@ public class ProductController {
 
     // TODO: 08.04.2024 add pagination, filtration, sorting etc.
     @GetMapping
-    public List<Product> findAll() {
-        return productService.findAll();
+    public List<Product> findAll(
+            @RequestParam(name = "filter", required = false) String filter) {
+        return productService.findAll(filter);
     }
 
     @GetMapping("/{id:\\d+}")
