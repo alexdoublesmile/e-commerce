@@ -8,3 +8,4 @@ spring:
     enabled: true
   jpa:
     show-sql: true
+    open-in-view: false

@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
 
 import static java.lang.String.format;
 
-// TODO: 08.04.2024 add transactional
 // TODO: 08.04.2024 norm add mapping
 @Service
 @RequiredArgsConstructor
