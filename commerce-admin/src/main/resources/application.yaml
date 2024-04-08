@@ -1,0 +1,4 @@
+spring:
+  application.name: commerce-admin
+server:
+  port: 8081

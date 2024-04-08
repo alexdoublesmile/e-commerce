@@ -28,6 +28,7 @@ import java.util.Objects;
 public class ProductController {
     private final ProductService productService;
 
+    // TODO: 08.04.2024 add pagination, filtration, sorting etc.
     @GetMapping
     public List<Product> findAll() {
         return productService.findAll();
@@ -61,12 +62,14 @@ public class ProductController {
         }
     }
 
+    // TODO: 08.04.2024 return patched entity with not 204
     @PatchMapping("/{id:\\d+}")
     public ResponseEntity<?> patchUpdate(
             @PathVariable("id") Long id,
             @Validated @RequestBody UpdateProductDto productDto,
             BindingResult bindingResult) throws BindException {
 
+        // TODO: 08.04.2024 move validation to model
         if (bindingResult.hasErrors()) {
             if (bindingResult instanceof BindException ex) {
                 throw ex;
@@ -79,6 +82,7 @@ public class ProductController {
         }
     }
 
+    // TODO: 08.04.2024 make put impl
 //    @PutMapping("/{id}")
 //    public ResponseEntity<Void> putUpdate(
 //            @PathVariable("id") Long id,
@@ -95,6 +99,7 @@ public class ProductController {
 //        return ResponseEntity.ok().body(productService.putUpdate(id, productDto));
 //    }
 
+    // TODO: 08.04.2024 return smth
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         productService.delete(id);

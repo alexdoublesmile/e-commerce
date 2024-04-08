@@ -17,6 +17,7 @@ import java.util.Objects;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+    // TODO: 08.04.2024 add i18n
     private final MessageSource messageSource;
 
     @ExceptionHandler(BindException.class)

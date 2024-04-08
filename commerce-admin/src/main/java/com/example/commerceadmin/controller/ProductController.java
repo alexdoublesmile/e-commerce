@@ -1,81 +1,68 @@
 package com.example.commerceadmin.controller;
 
+import com.example.commerceadmin.client.ProductClient;
+import com.example.commerceadmin.exception.BadRequestException;
 import com.example.commerceadmin.model.dto.CreateProductDto;
 import com.example.commerceadmin.model.dto.UpdateProductDto;
 import com.example.commerceadmin.model.entity.Product;
-import com.example.commerceadmin.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
-    private final ProductService productService;
+    private final ProductClient productClient;
 
     @GetMapping
     public String findAll(Model model) {
-        model.addAttribute("productList", productService.findAll());
+        model.addAttribute("productList", productClient.findAll());
         return "product/list";
     }
 
     @GetMapping("/{id:\\d+}")
     public String findById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
+        model.addAttribute("product", productClient.findById(id));
         return "product/item";
     }
 
     @PostMapping
-    public String save(
-            @Validated CreateProductDto productDto,
-            BindingResult bindingResult,
-            Model model) {
-        if (bindingResult.hasErrors()) {
-            final List<String> errorList = bindingResult.getAllErrors()
-                    .stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList();
+    public String save(@Validated CreateProductDto productDto, Model model) {
+        try {
+            Product savedProduct = productClient.save(productDto);
+            return "redirect:/products/" + savedProduct.getId();
+        } catch (BadRequestException ex) {
             model.addAttribute("payload", productDto);
-            model.addAttribute("errors", errorList);
+            model.addAttribute("errors", ex.getErrors());
             return "product/add";
         }
-        Product savedProduct = productService.save(productDto);
-        return "redirect:/products/" + savedProduct.getId();
     }
 
     @PostMapping("/{id}")
     public String update(
             @PathVariable("id") Long id,
             @Validated UpdateProductDto productDto,
-            BindingResult bindingResult,
             Model model) {
-        if (bindingResult.hasErrors()) {
-            final List<String> errorList = bindingResult.getAllErrors()
-                    .stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList();
-            model.addAttribute("product", productService.findById(id));
+        try {
+            productClient.update(id, productDto);
+            return "redirect:/products";
+        } catch (BadRequestException ex) {
+            model.addAttribute("product", productClient.findById(id));
             model.addAttribute("payload", productDto);
-            model.addAttribute("errors", errorList);
+            model.addAttribute("errors", ex.getErrors());
             return "product/edit";
         }
-        productService.update(id, productDto);
-        return "redirect:/products";
     }
 
     @PostMapping("/{id:\\d+}/delete")
     public String delete(@PathVariable("id") Long id) {
-        productService.delete(id);
+        productClient.delete(id);
         return "redirect:/products";
     }
 
@@ -86,7 +73,7 @@ public class ProductController {
 
     @GetMapping("/{id:\\d+}/edit")
     public String getEditProductPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
+        model.addAttribute("product", productClient.findById(id));
         return "product/edit";
     }
 }
