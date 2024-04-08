@@ -12,6 +12,7 @@
 
     <modules>
         <module>commerce-admin</module>
+        <module>commerce-service</module>
     </modules>
 
     <properties>

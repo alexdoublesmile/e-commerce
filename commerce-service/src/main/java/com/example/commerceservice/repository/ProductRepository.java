@@ -1,8 +1,7 @@
-package com.example.commerceadmin.repository;
+package com.example.commerceservice.repository;
 
 
-
-import com.example.commerceadmin.model.entity.Product;
+import com.example.commerceservice.model.entity.Product;
 
 import java.util.List;
 import java.util.Optional;
