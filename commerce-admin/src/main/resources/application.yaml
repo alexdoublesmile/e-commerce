@@ -22,6 +22,5 @@ spring:
 commerce-service:
   host: ${COMMERCE_SERVICE_HOST:http://localhost}
   port: ${COMMERCE_SERVICE_PORT:8080}
-  username: ${COMMERCE_SERVICE_USERNAME:service}
-  password: ${COMMERCE_SERVICE_PASSWORD:password}
-  product.uri: "/api/v1/products"
+  registration-id: ${COMMERCE_SERVICE_REGISTRATION_ID:keycloak}
+  product.uri: /api/v1/products

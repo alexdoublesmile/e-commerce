@@ -1,5 +1,6 @@
 package com.example.commerceservice.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,15 +13,18 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    @Value("${commerce-service.product.uri}")
+    private String commerceServiceProductUri;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers(HttpMethod.POST, "/products/**").hasAuthority("SCOPE_edit_products")
-                        .requestMatchers(HttpMethod.PUT, "/products/**").hasAuthority("SCOPE_edit_products")
-                        .requestMatchers(HttpMethod.PATCH, "/products/**").hasAuthority("SCOPE_edit_products")
-                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasAuthority("SCOPE_edit_products")
-                        .requestMatchers(HttpMethod.GET, "/products/**").hasAuthority("SCOPE_view_products")
+                        .requestMatchers(HttpMethod.POST, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.PUT, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.PATCH, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.DELETE, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.GET, commerceServiceProductUri + "/**").hasAuthority("SCOPE_view_products")
                         .anyRequest().denyAll())
                 .csrf(CsrfConfigurer::disable)
                 // don't restore http sessions by servlet session
