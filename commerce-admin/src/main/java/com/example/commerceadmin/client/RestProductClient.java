@@ -17,12 +17,20 @@ import java.util.NoSuchElementException;
 
 import static java.lang.String.format;
 
+// TODO: 08.04.2024 make normal either for return and exception handling
+// TODO: 08.04.2024 add HTTP interfaces impl.
+// TODO: 09.04.2024 add exchange by binary types
+// TODO: 09.04.2024 add exchange by streams
+// TODO: 09.04.2024 add backpressure
+// TODO: 09.04.2024 add multi transactions with full backpressure
+// TODO: 09.04.2024 add retries and resilience
+// TODO: 09.04.2024 add caching
+// TODO: 09.04.2024 add logging 
 @Log4j2
 @RequiredArgsConstructor
 public class RestProductClient implements ProductClient {
     private static final ParameterizedTypeReference<List<Product>> PRODUCT_LIST_TYPE_REFERENCE
             = new ParameterizedTypeReference<>(){};
-    // TODO: 08.04.2024 try to use HTTP interfaces
     private final RestClient restClient;
 
     @Override
@@ -59,7 +67,6 @@ public class RestProductClient implements ProductClient {
                     .retrieve()
                     .body(Product.class);
         } catch (HttpClientErrorException.BadRequest ex) {
-            // TODO: 08.04.2024 make normal either or smth
             final ProblemDetail problemDetail = ex.getResponseBodyAs(ProblemDetail.class);
             throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
         }
@@ -79,7 +86,6 @@ public class RestProductClient implements ProductClient {
             throw new NoSuchElementException(format(
                     "No product with id %s for update", id));
         } catch (HttpClientErrorException.BadRequest ex) {
-            // TODO: 08.04.2024 make normal either or smth
             final ProblemDetail problemDetail = ex.getResponseBodyAs(ProblemDetail.class);
             throw new BadRequestException((List<String>) problemDetail.getProperties().get("errors"));
         }

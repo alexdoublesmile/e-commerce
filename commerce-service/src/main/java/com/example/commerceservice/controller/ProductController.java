@@ -21,13 +21,15 @@ import java.util.Map;
 public class ProductController {
     private final ProductService productService;
 
-    // TODO: 08.04.2024 add pagination, filtration, sorting etc.
+    // TODO: 08.04.2024 add complex filtration
+    // TODO: 08.04.2024 add pagination, sorting etc.
     @GetMapping
     public List<Product> findAll(
             @RequestParam(name = "filter", required = false) String filter) {
         return productService.findAll(filter);
     }
 
+    // TODO: 09.04.2024 return dto type
     @GetMapping("/{id:\\d+}")
     public Product findById(@PathVariable("id") Long id) {
         return productService.findById(id);

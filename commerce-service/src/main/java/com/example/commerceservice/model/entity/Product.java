@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// TODO: 09.04.2024 make complex entity with all relation types
+// TODO: 09.04.2024 add complex fields as photo, arrays, collections, streams etc.
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

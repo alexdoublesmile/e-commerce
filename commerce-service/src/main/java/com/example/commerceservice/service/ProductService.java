@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 
 import static java.lang.String.format;
 
-// TODO: 08.04.2024 norm add mapping
+// TODO: 08.04.2024 add mappers & mapping
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -39,7 +39,7 @@ public class ProductService {
                         "No product with id %s", id)));
     }
 
-    // TODO: 08.04.2024 make norm patch
+    // TODO: 08.04.2024 fix patch
     @Transactional
     public Product update(Long id, UpdateProductDto productDto) {
         final Product productFromDB = productRepository.findById(id).orElseThrow(() ->

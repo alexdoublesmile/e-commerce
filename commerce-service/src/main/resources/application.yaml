@@ -7,5 +7,8 @@ spring:
   flyway:
     enabled: true
   jpa:
-    show-sql: true
     open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+// TODO: 09.04.2024 try to use JS for view
+// TODO: 09.04.2024 try to use Vaadin, Swing, JavaFX for view
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/products")
