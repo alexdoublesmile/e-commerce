@@ -1,7 +1,20 @@
-spring:
-  application.name: commerce-admin
 server:
   port: 8081
+spring:
+  application.name: commerce-admin
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  flyway:
+    enabled: true
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
 commerce-service:
   host: ${COMMERCE_SERVICE_HOST:http://localhost}
   port: ${COMMERCE_SERVICE_PORT:8080}

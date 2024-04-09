@@ -1,11 +1,7 @@
+server:
+  port: 8080
 spring:
   application.name: commerce-service
-  security:
-    user:
-      name: ${SECURITY_USERNAME:service}
-      password: ${SECURITY_PASSWORD:password}
-      roles:
-        - SERVICE
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:postgres}
     username: ${DB_USERNAME:postgres}
@@ -18,3 +14,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  security:
+    user:
+      name: ${SECURITY_USERNAME:service}
+      password: ${SECURITY_PASSWORD:password}
+      roles:
+        - SERVICE
