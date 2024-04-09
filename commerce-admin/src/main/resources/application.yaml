@@ -2,18 +2,22 @@ server:
   port: 8081
 spring:
   application.name: commerce-admin
-  datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:postgres}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
-  flyway:
-    enabled: true
-  jpa:
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8082/realms/commerce}
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: commerce-admin
+            client-secret: ${KEYCLOAK_SECRET}
+            scope:
+              - openid
+              - microprofile-jwt
+              - view_products
+              - edit_products
 
 commerce-service:
   host: ${COMMERCE_SERVICE_HOST:http://localhost}
