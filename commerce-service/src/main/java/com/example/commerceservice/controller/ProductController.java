@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -59,6 +59,7 @@ public class ProductController {
     }
 
     // TODO: 08.04.2024 return patched entity with not 204
+    // TODO: 08.04.2024 add put impl
     @PatchMapping("/{id:\\d+}")
     public ResponseEntity<?> patchUpdate(
             @PathVariable("id") Long id,
@@ -77,23 +78,6 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
     }
-
-    // TODO: 08.04.2024 make put impl
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Void> putUpdate(
-//            @PathVariable("id") Long id,
-//            @Validated @RequestBody UpdateProductDto productDto,
-//            BindingResult bindingResult) {
-//
-//        if (bindingResult.hasErrors()) {
-//            final List<String> errorList = bindingResult.getAllErrors()
-//                    .stream()
-//                    .map(ObjectError::getDefaultMessage)
-//                    .toList();
-//        }
-//
-//        return ResponseEntity.ok().body(productService.putUpdate(id, productDto));
-//    }
 
     // TODO: 08.04.2024 return smth
     @DeleteMapping("/{id:\\d+}")

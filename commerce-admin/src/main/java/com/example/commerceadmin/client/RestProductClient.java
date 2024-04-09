@@ -6,6 +6,7 @@ import com.example.commerceadmin.model.dto.UpdateProductDto;
 import com.example.commerceadmin.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -33,11 +34,14 @@ public class RestProductClient implements ProductClient {
             = new ParameterizedTypeReference<>(){};
     private final RestClient restClient;
 
+    @Value("${commerce-service.product.uri}")
+    private String commerceServiceProductUri;
+
     @Override
     public List<Product> findAll(String filter) {
         return restClient
                 .get()
-                .uri("/products?filter={filter}", filter)
+                .uri(commerceServiceProductUri + "?filter={filter}", filter)
                 .retrieve()
                 .body(PRODUCT_LIST_TYPE_REFERENCE);
     }
@@ -47,7 +51,7 @@ public class RestProductClient implements ProductClient {
         try {
             return restClient
                     .get()
-                    .uri("/products/{id}",id)
+                    .uri(commerceServiceProductUri + "/{id}",id)
                     .retrieve()
                     .body(Product.class);
         } catch (HttpClientErrorException.NotFound ex) {
@@ -61,7 +65,7 @@ public class RestProductClient implements ProductClient {
         try {
             return restClient
                     .post()
-                    .uri("/products")
+                    .uri(commerceServiceProductUri)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(productDto)
                     .retrieve()
@@ -77,7 +81,7 @@ public class RestProductClient implements ProductClient {
         try {
             restClient
                     .patch()
-                    .uri("/products/{id}", id)
+                    .uri(commerceServiceProductUri + "/{id}", id)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(productDto)
                     .retrieve()
@@ -96,7 +100,7 @@ public class RestProductClient implements ProductClient {
         try {
             restClient
                     .delete()
-                    .uri("/products/{id}",id)
+                    .uri(commerceServiceProductUri + "/{id}",id)
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException.NotFound ex) {

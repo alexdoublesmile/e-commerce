@@ -7,3 +7,4 @@ commerce-service:
   port: ${COMMERCE_SERVICE_PORT:8080}
   username: ${COMMERCE_SERVICE_USERNAME:service}
   password: ${COMMERCE_SERVICE_PASSWORD:password}
+  product.uri: "/api/v1/products"
