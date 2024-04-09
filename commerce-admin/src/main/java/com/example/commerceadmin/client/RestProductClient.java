@@ -25,7 +25,7 @@ import static java.lang.String.format;
 // TODO: 09.04.2024 add multi transactions with full backpressure
 // TODO: 09.04.2024 add retries and resilience
 // TODO: 09.04.2024 add caching
-// TODO: 09.04.2024 add logging 
+// TODO: 09.04.2024 add logging
 @Log4j2
 @RequiredArgsConstructor
 public class RestProductClient implements ProductClient {
