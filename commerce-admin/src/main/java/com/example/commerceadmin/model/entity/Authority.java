@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Authority {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String authority;
+    private String name;
 }
