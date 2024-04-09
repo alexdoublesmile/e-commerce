@@ -15,8 +15,7 @@ spring:
       hibernate:
         format_sql: true
   security:
-    user:
-      name: ${SECURITY_USERNAME:service}
-      password: ${SECURITY_PASSWORD:password}
-      roles:
-        - SERVICE
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8082/realms/commerce}
