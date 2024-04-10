@@ -23,11 +23,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ProblemDetail> noElement(BindException ex, Locale locale) {
-        final String errormessage = Objects.requireNonNull(messageSource.getMessage(
-                "errors.400.title", new Object[0], "errors.400.title", locale));
+//        final String errormessage = Objects.requireNonNull(messageSource.getMessage(
+//                "errors.400.title", new Object[0], "errors.400.title", locale));
 
         final ProblemDetail problemDetail = ProblemDetail
-                .forStatusAndDetail(HttpStatus.BAD_REQUEST, errormessage);
+                .forStatusAndDetail(HttpStatus.BAD_REQUEST, "Bad Request in e-commerce");
         problemDetail.setProperty("errors", ex.getAllErrors()
                 .stream()
                 .map(ObjectError::getDefaultMessage)
@@ -39,15 +39,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ProblemDetail> noElement(
-            NoSuchElementException ex,
-            Locale locale
-    ) {
-        final String errormessage = Objects.requireNonNull(messageSource.getMessage(
-                "errors.404.title", new Object[0], "errors.404.title", locale));
+    public ResponseEntity<ProblemDetail> noElement(Locale locale) {
+//        final String errormessage = Objects.requireNonNull(messageSource.getMessage(
+//                "errors.404.title", new Object[0], "errors.404.title", locale));
 
         final ProblemDetail problemDetail = ProblemDetail
-                .forStatusAndDetail(HttpStatus.NOT_FOUND, errormessage);
+                .forStatusAndDetail(HttpStatus.NOT_FOUND, "Bad Request in e-commerce");
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

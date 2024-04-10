@@ -52,7 +52,7 @@ public class ProductController {
             Product savedProduct = productService.save(productDto);
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .replacePath("/products/{productId}")
+                            .replacePath("/api/v1/products/{productId}")
                             .build(Map.of("productId", savedProduct.getId())))
                     .body(savedProduct);
         }

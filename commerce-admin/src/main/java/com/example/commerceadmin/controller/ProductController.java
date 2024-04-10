@@ -5,7 +5,9 @@ import com.example.commerceadmin.exception.BadRequestException;
 import com.example.commerceadmin.model.dto.CreateProductDto;
 import com.example.commerceadmin.model.dto.UpdateProductDto;
 import com.example.commerceadmin.model.entity.Product;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -35,11 +37,15 @@ public class ProductController {
     }
 
     @PostMapping
-    public String save(@Validated CreateProductDto productDto, Model model) {
+    public String save(
+            @Validated CreateProductDto productDto,
+            Model model,
+            HttpServletResponse response) {
         try {
             Product savedProduct = productClient.save(productDto);
             return "redirect:/products/" + savedProduct.getId();
         } catch (BadRequestException ex) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             model.addAttribute("payload", productDto);
             model.addAttribute("errors", ex.getErrors());
             return "product/add";
@@ -50,11 +56,13 @@ public class ProductController {
     public String update(
             @PathVariable("id") Long id,
             @Validated UpdateProductDto productDto,
-            Model model) {
+            Model model,
+            HttpServletResponse response) {
         try {
             productClient.update(id, productDto);
             return "redirect:/products";
         } catch (BadRequestException ex) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             model.addAttribute("product", productClient.findById(id));
             model.addAttribute("payload", productDto);
             model.addAttribute("errors", ex.getErrors());
