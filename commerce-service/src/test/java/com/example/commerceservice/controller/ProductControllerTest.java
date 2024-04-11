@@ -72,7 +72,7 @@ class ProductControllerTest {
         // then
         assertNotNull(result);
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
-        assertEquals(URI.create("http://localhost/products/1"), result.getHeaders().getLocation());
+        assertEquals(URI.create("http://localhost/api/v1/products/1"), result.getHeaders().getLocation());
         assertEquals(new Product(1L, "Новое название", "Новое описание"), result.getBody());
 
         verify(productService).save(payload);

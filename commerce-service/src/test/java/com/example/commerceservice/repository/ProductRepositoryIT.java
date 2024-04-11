@@ -24,12 +24,12 @@ class ProductRepositoryIT {
     @Test
     void findAllByTitleLikeIgnoreCase_ReturnsFilteredProductsList() {
         // given
-        var filter = "%шоколадка%";
+        var filter = "%choco%";
 
         // when
         var products = productRepository.findAllByFilter(filter);
 
         // then
-        assertEquals(List.of(new Product(2L, "Шоколадка", "Очень вкусная шоколадка")), products);
+        assertEquals(List.of(new Product(2L, "Choco", "Tasty choco")), products);
     }
 }

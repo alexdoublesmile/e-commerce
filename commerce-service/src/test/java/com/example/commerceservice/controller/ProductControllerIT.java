@@ -32,7 +32,7 @@ class ProductControllerIT {
     void findProducts_ReturnsProductsList() throws Exception {
         // given
         var requestBuilder = MockMvcRequestBuilders.get("/api/v1/products")
-                .param("filter", "товар")
+                .param("filter", "item")
                 .with(jwt().jwt(builder -> builder.claim("scope", "view_products")));
 
         // when
@@ -44,8 +44,8 @@ class ProductControllerIT {
                         content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
                         content().json("""
                                 [
-                                    {"id": 1, "title": "Товар №1", "details": "Описание товара №1"},
-                                    {"id": 3, "title": "Товар №3", "details": "Описание товара №3"}
+                                    {"id": 1, "title": "Item 1", "details": "Item description 1"},
+                                    {"id": 3, "title": "Item 3", "details": "Item description 3"}
                                 ]""")
                 );
     }
@@ -153,8 +153,8 @@ class ProductControllerIT {
                         content().json("""
                                 {
                                     "id": 1,
-                                    "title": "Товар №1",
-                                    "details": "Описание товара №1"
+                                    "title": "Item 1",
+                                    "details": "Item description 1"
                                 }""")
                 );
     }
