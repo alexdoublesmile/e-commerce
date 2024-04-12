@@ -1,2 +1,8 @@
+server:
+  port: 8083
 spring:
   application.name: customer-service
+
+commerce-service:
+  host: ${COMMERCE_SERVICE_HOST:http://localhost}
+  port: ${COMMERCE_SERVICE_PORT:8080}

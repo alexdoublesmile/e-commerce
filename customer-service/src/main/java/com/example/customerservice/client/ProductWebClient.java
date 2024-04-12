@@ -4,6 +4,7 @@ import com.example.customerservice.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 public class ProductWebClient implements ProductClient {
@@ -13,8 +14,16 @@ public class ProductWebClient implements ProductClient {
     @Override
     public Flux<Product> findAll(String filter) {
         return webClient.get()
-                .uri("/products?filter={filter}", filter)
+                .uri("/api/v1/products?filter={filter}", filter)
                 .retrieve()
                 .bodyToFlux(Product.class);
+    }
+
+    @Override
+    public Mono<Product> findById(Long id) {
+        return webClient.get()
+                .uri("/api/v1/products/{id}", id)
+                .retrieve()
+                .bodyToMono(Product.class);
     }
 }

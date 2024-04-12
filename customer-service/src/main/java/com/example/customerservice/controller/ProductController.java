@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Mono;
@@ -21,9 +22,21 @@ public class ProductController {
             @RequestParam(required = false, name = "filter") String filter,
             Model model) {
 
+        model.addAttribute("filter", filter);
+
         return productClient.findAll(filter)
                 .collectList()
                 .doOnNext(productList -> model.addAttribute("productList", productList))
                 .thenReturn("product/list");
+    }
+
+    @GetMapping("/{id:\\d+}")
+    public Mono<String> getProductPage(
+            @PathVariable("id") Long id,
+            Model model) {
+
+        return productClient.findById(id)
+                .doOnNext(product -> model.addAttribute("product", product))
+                .thenReturn("product/item");
     }
 }

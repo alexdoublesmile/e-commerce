@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${product.title}]] &ndash; Shop</title>
+</head>
+    <body>
+        <a data-th-href="@{/customer/products/list}">&larr; Back to Product list</a>
+        <h1 data-th-text="${product.title}"></h1>
+        <ul>
+            <li><strong>Title</strong>: <span data-th-text="${product.title}"></span></li>
+            <li><strong>Details</strong>: <span data-th-text="${product.details}"></span></li>
+        </ul>
+    </body>
+</html>

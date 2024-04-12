@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list &ndash; Shop</title>
+</head>
+    <body>
+        <h1>Our Products</h1>
+        <form>
+            <label>Filter:
+                <input type="text" name="filter" data-th-value="${filter}"/>
+                <button type="submit">Search</button>
+            </label>
+        </form>
+        <ul>
+            <li data-th-each="product : ${productList}">
+                <strong>
+                    <a data-th-text="${product.title}"
+                       data-th-href="@{customer/products/{productId}(productId=${product.id})}"></a>
+                </strong>
+                <p data-th-text="${product.details}"></p>
+            </li>
+        </ul>
+    </body>
+</html>
