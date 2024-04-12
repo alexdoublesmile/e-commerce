@@ -1,6 +1,6 @@
 package com.example.customerservice.repository;
 
-import com.example.customerservice.model.entity.FavouriteProduct;
+import com.example.customerservice.model.entity.Favourite;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -11,29 +11,29 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Repository
 public class InMemoryFavouriteRepository implements FavouriteRepository {
 
-    private final List<FavouriteProduct> favouriteList = new CopyOnWriteArrayList<>();
+    private final List<Favourite> favouriteList = new CopyOnWriteArrayList<>();
 
     @Override
-    public Mono<FavouriteProduct> save(FavouriteProduct favouriteProduct) {
-        favouriteList.add(favouriteProduct);
-        return Mono.just(favouriteProduct);
+    public Mono<Favourite> save(Favourite favourite) {
+        favouriteList.add(favourite);
+        return Mono.just(favourite);
     }
 
     @Override
     public Mono<Void> deleteByProductId(Long productId) {
-        favouriteList.removeIf(favouriteProduct -> favouriteProduct.getProductId() == productId);
+        favouriteList.removeIf(favourite -> favourite.getProductId() == productId);
         return Mono.empty();
     }
 
     @Override
-    public Mono<FavouriteProduct> findByProductId(Long productId) {
+    public Mono<Favourite> findByProductId(Long productId) {
         return Flux.fromIterable(favouriteList)
-                .filter(favouriteProduct ->  favouriteProduct.getProductId() == productId)
+                .filter(favourite ->  favourite.getProductId() == productId)
                 .singleOrEmpty();
     }
 
     @Override
-    public Flux<FavouriteProduct> findAll() {
+    public Flux<Favourite> findAll() {
         return Flux.fromIterable(favouriteList);
     }
 }

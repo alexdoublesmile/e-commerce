@@ -19,5 +19,29 @@
               data-th-if="${isFavourite}">
             <button type="submit">Remove from favourites</button>
         </form>
+        <h2>Reviews:</h2>
+        <div data-th-if="${errors}">
+            <h3></h3>
+            <ul>
+                <li data-th-each="error : ${errors}" data-th-text="${error}"></li>
+            </ul>
+        </div>
+        <form method="post" data-th-action="@{/customer/products/{productId}/add-review(productId=${product.id})}">
+            <label><input type="radio" name="rating" value="1"> 1</label>
+            <label><input type="radio" name="rating" value="2"> 2</label>
+            <label><input type="radio" name="rating" value="3"> 3</label>
+            <label><input type="radio" name="rating" value="4"> 4</label>
+            <label><input type="radio" name="rating" value="5"> 5</label>
+            <br>
+            <label>
+                <textarea name="text"></textarea>
+            </label><br>
+<!--            <input type="hidden" name="isFavourite" value="true" data-th-if="${isFavourite}"/>-->
+            <button type="submit">Send</button>
+        </form>
+        <div data-th-each="review : ${reviewList}">
+            <h3>[[${review.rating}]]*</h3>
+            <p data-th-text="${review.text}"></p>
+        </div>
     </body>
 </html>

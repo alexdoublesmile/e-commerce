@@ -1,12 +1,16 @@
 package com.example.customerservice.controller;
 
 import com.example.customerservice.client.ProductClient;
-import com.example.customerservice.model.entity.FavouriteProduct;
-import com.example.customerservice.model.entity.Product;
+import com.example.customerservice.model.dto.CreateReviewDto;
+import com.example.customerservice.model.entity.Favourite;
 import com.example.customerservice.service.FavouriteService;
+import com.example.customerservice.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +21,7 @@ public class ProductController {
 
     private final ProductClient productClient;
     private final FavouriteService favouriteService;
+    private final ReviewService reviewService;
 
     @GetMapping("/list")
     public Mono<String> getProductListPage(
@@ -39,7 +44,7 @@ public class ProductController {
         model.addAttribute("filter", filter);
 
         return favouriteService.findAll()
-                .map(FavouriteProduct::getProductId)
+                .map(Favourite::getProductId)
                 .collectList()
                 .flatMap(favourites -> productClient.findAll(filter)
                         .filter(product -> favourites.contains(product.id()))
@@ -59,6 +64,9 @@ public class ProductController {
                 .doOnNext(product -> model.addAttribute("product", product))
                 .then(favouriteService.findByProductId(id)
                         .doOnNext(product -> model.addAttribute("isFavourite", true)))
+                .then(reviewService.findAllByProductId(id)
+                        .collectList()
+                        .doOnNext(reviewList -> model.addAttribute("reviewList", reviewList)))
                 .thenReturn("product/item");
     }
 
@@ -72,5 +80,34 @@ public class ProductController {
     public Mono<String> removeFromFavourite(@PathVariable("id") Long id) {
         return favouriteService.remove(id)
                 .thenReturn("redirect:/customer/products/%d".formatted(id));
+    }
+
+    @PostMapping("/{id:\\d+}/add-review")
+    public Mono<String> addReview(
+            @PathVariable("id") Long productId,
+            @Validated CreateReviewDto dto,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("isFavourite", false);
+            model.addAttribute("payload", dto);
+            model.addAttribute("errors", bindingResult.getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .toList());
+
+            return productClient.findById(productId)
+                    .doOnNext(product -> model.addAttribute("product", product))
+                    .then(favouriteService.findByProductId(productId)
+                            .doOnNext(product -> model.addAttribute("isFavourite", true)))
+                    .then(reviewService.findAllByProductId(productId)
+                            .collectList()
+                            .doOnNext(reviewList -> model.addAttribute("reviewList", reviewList)))
+                    .thenReturn("product/item");
+        } else {
+            return reviewService.add(productId, dto)
+                    .thenReturn("redirect:/customer/products/%d".formatted(productId));
+        }
     }
 }
