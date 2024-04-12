@@ -11,5 +11,13 @@
             <li><strong>Title</strong>: <span data-th-text="${product.title}"></span></li>
             <li><strong>Details</strong>: <span data-th-text="${product.details}"></span></li>
         </ul>
+        <form method="post" data-th-action="@{/customer/products/{productId}/add-to-favourites(productId=${product.id})}"
+              data-th-if="${!isFavourite}">
+            <button type="submit">Add to favourites</button>
+        </form>
+        <form method="post" data-th-action="@{/customer/products/{productId}/remove-from-favourites(productId=${product.id})}"
+              data-th-if="${isFavourite}">
+            <button type="submit">Remove from favourites</button>
+        </form>
     </body>
 </html>

@@ -1,13 +1,11 @@
 package com.example.customerservice.controller;
 
 import com.example.customerservice.client.ProductClient;
+import com.example.customerservice.service.FavouriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -16,6 +14,7 @@ import reactor.core.publisher.Mono;
 public class ProductController {
 
     private final ProductClient productClient;
+    private final FavouriteService favouriteService;
 
     @GetMapping("/list")
     public Mono<String> getProductListPage(
@@ -35,8 +34,24 @@ public class ProductController {
             @PathVariable("id") Long id,
             Model model) {
 
+        model.addAttribute("isFavourite", false);
+
         return productClient.findById(id)
                 .doOnNext(product -> model.addAttribute("product", product))
+                .then(favouriteService.findByProductId(id)
+                        .doOnNext(product -> model.addAttribute("isFavourite", true)))
                 .thenReturn("product/item");
+    }
+
+    @PostMapping("/{id:\\d+}/add-to-favourites")
+    public Mono<String> addToFavourite(@PathVariable("id") Long id) {
+        return favouriteService.add(id)
+                .thenReturn("redirect:/customer/products/%d".formatted(id));
+    }
+
+    @PostMapping("/{id:\\d+}/remove-from-favourites")
+    public Mono<String> removeFromFavourite(@PathVariable("id") Long id) {
+        return favouriteService.remove(id)
+                .thenReturn("redirect:/customer/products/%d".formatted(id));
     }
 }
