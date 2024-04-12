@@ -14,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.NoSuchElementException;
+
 @Controller
 @RequestMapping("/customer/products")
 @RequiredArgsConstructor
@@ -61,6 +63,7 @@ public class ProductController {
         model.addAttribute("isFavourite", false);
 
         return productClient.findById(id)
+                .switchIfEmpty(Mono.error(new NoSuchElementException("customer.products.error.not_found")))
                 .doOnNext(product -> model.addAttribute("product", product))
                 .then(favouriteService.findByProductId(id)
                         .doOnNext(product -> model.addAttribute("isFavourite", true)))
@@ -90,24 +93,22 @@ public class ProductController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("isFavourite", false);
             model.addAttribute("payload", dto);
             model.addAttribute("errors", bindingResult.getAllErrors()
                     .stream()
                     .map(ObjectError::getDefaultMessage)
                     .toList());
 
-            return productClient.findById(productId)
-                    .doOnNext(product -> model.addAttribute("product", product))
-                    .then(favouriteService.findByProductId(productId)
-                            .doOnNext(product -> model.addAttribute("isFavourite", true)))
-                    .then(reviewService.findAllByProductId(productId)
-                            .collectList()
-                            .doOnNext(reviewList -> model.addAttribute("reviewList", reviewList)))
-                    .thenReturn("product/item");
+            return getProductPage(productId, model);
         } else {
             return reviewService.add(productId, dto)
                     .thenReturn("redirect:/customer/products/%d".formatted(productId));
         }
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public String handleNoSuchElementException(NoSuchElementException exception, Model model) {
+        model.addAttribute("error", exception.getMessage());
+        return "error/404";
     }
 }
