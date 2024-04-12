@@ -2,8 +2,10 @@ package com.example.customerservice.service;
 
 import com.example.customerservice.model.entity.FavouriteProduct;
 import com.example.customerservice.repository.FavouriteRepository;
+import io.micrometer.observation.ObservationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -24,5 +26,9 @@ public class FavouriteService {
 
     public Mono<FavouriteProduct> findByProductId(Long productId) {
         return favouriteRepository.findByProductId(productId);
+    }
+
+    public Flux<FavouriteProduct> findAll() {
+        return favouriteRepository.findAll();
     }
 }

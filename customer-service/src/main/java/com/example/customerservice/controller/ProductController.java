@@ -1,6 +1,8 @@
 package com.example.customerservice.controller;
 
 import com.example.customerservice.client.ProductClient;
+import com.example.customerservice.model.entity.FavouriteProduct;
+import com.example.customerservice.model.entity.Product;
 import com.example.customerservice.service.FavouriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,23 @@ public class ProductController {
                 .collectList()
                 .doOnNext(productList -> model.addAttribute("productList", productList))
                 .thenReturn("product/list");
+    }
+
+    @GetMapping("/favourites")
+    public Mono<String> getFavouriteListPage(
+            @RequestParam(required = false, name = "filter") String filter,
+            Model model) {
+
+        model.addAttribute("filter", filter);
+
+        return favouriteService.findAll()
+                .map(FavouriteProduct::getProductId)
+                .collectList()
+                .flatMap(favourites -> productClient.findAll(filter)
+                        .filter(product -> favourites.contains(product.id()))
+                        .collectList()
+                .doOnNext(productList -> model.addAttribute("productList", productList)))
+                .thenReturn("product/favourites");
     }
 
     @GetMapping("/{id:\\d+}")
