@@ -1,8 +1,8 @@
-package com.example.customerservice.service;
+package com.example.feedbackservice.service;
 
-import com.example.customerservice.model.dto.CreateReviewDto;
-import com.example.customerservice.model.entity.Review;
-import com.example.customerservice.repository.ReviewRepository;
+import com.example.feedbackservice.model.dto.CreateReviewDto;
+import com.example.feedbackservice.model.entity.Review;
+import com.example.feedbackservice.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

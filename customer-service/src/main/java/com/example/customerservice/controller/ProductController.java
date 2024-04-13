@@ -1,10 +1,9 @@
 package com.example.customerservice.controller;
 
+import com.example.customerservice.client.FeedbackClient;
 import com.example.customerservice.client.ProductClient;
 import com.example.customerservice.model.dto.CreateReviewDto;
 import com.example.customerservice.model.entity.Favourite;
-import com.example.customerservice.service.FavouriteService;
-import com.example.customerservice.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +21,7 @@ import java.util.NoSuchElementException;
 public class ProductController {
 
     private final ProductClient productClient;
-    private final FavouriteService favouriteService;
-    private final ReviewService reviewService;
+    private final FeedbackClient feedbackClient;
 
     @GetMapping("/list")
     public Mono<String> getProductListPage(
@@ -45,8 +43,8 @@ public class ProductController {
 
         model.addAttribute("filter", filter);
 
-        return favouriteService.findAll()
-                .map(Favourite::getProductId)
+        return feedbackClient.findAllFavourite()
+                .map(Favourite::productId)
                 .collectList()
                 .flatMap(favourites -> productClient.findAll(filter)
                         .filter(product -> favourites.contains(product.id()))
@@ -65,9 +63,9 @@ public class ProductController {
         return productClient.findById(id)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("customer.products.error.not_found")))
                 .doOnNext(product -> model.addAttribute("product", product))
-                .then(favouriteService.findByProductId(id)
+                .then(feedbackClient.findFavouriteByProductId(id)
                         .doOnNext(product -> model.addAttribute("isFavourite", true)))
-                .then(reviewService.findAllByProductId(id)
+                .then(feedbackClient.findAllReviewByProductId(id)
                         .collectList()
                         .doOnNext(reviewList -> model.addAttribute("reviewList", reviewList)))
                 .thenReturn("product/item");
@@ -75,13 +73,13 @@ public class ProductController {
 
     @PostMapping("/{id:\\d+}/add-to-favourites")
     public Mono<String> addToFavourite(@PathVariable("id") Long id) {
-        return favouriteService.add(id)
+        return feedbackClient.addFavourite(id)
                 .thenReturn("redirect:/customer/products/%d".formatted(id));
     }
 
     @PostMapping("/{id:\\d+}/remove-from-favourites")
     public Mono<String> removeFromFavourite(@PathVariable("id") Long id) {
-        return favouriteService.remove(id)
+        return feedbackClient.removeFavourite(id)
                 .thenReturn("redirect:/customer/products/%d".formatted(id));
     }
 
@@ -101,7 +99,7 @@ public class ProductController {
 
             return getProductPage(productId, model);
         } else {
-            return reviewService.add(productId, dto)
+            return feedbackClient.addReview(productId, dto)
                     .thenReturn("redirect:/customer/products/%d".formatted(productId));
         }
     }

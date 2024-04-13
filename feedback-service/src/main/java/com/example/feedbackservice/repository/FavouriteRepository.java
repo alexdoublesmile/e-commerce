@@ -1,6 +1,6 @@
-package com.example.customerservice.repository;
+package com.example.feedbackservice.repository;
 
-import com.example.customerservice.model.entity.Favourite;
+import com.example.feedbackservice.model.entity.Favourite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

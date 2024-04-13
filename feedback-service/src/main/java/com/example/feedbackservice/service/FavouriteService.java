@@ -1,7 +1,7 @@
-package com.example.customerservice.service;
+package com.example.feedbackservice.service;
 
-import com.example.customerservice.model.entity.Favourite;
-import com.example.customerservice.repository.FavouriteRepository;
+import com.example.feedbackservice.model.entity.Favourite;
+import com.example.feedbackservice.repository.FavouriteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

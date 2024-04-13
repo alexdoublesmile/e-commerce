@@ -1,21 +1,7 @@
 package com.example.customerservice.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Review {
+public record Review(UUID id, Long productId, Integer rating, String text) {
 
-    private UUID id;
-
-    private Long productId;
-
-    private Integer rating;
-
-    private String text;
 }
