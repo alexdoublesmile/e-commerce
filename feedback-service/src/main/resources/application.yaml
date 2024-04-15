@@ -4,4 +4,9 @@ spring:
   application.name: feedback-service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/feedback
+      uri: mongodb://${DB_HOST:localhost}:${DB_PORT:27017}/${DB_NAME:feedback}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8082/realms/commerce}
