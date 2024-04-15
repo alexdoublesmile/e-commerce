@@ -34,7 +34,6 @@ public class FavouriteController {
             UriComponentsBuilder uriComponentsBuilder) {
         return dto
                 .flatMap(payload -> favouriteService.add(payload.productId()))
-                .log()
                 .map(favourite -> ResponseEntity.created(uriComponentsBuilder.replacePath("/api/v1/favourites/{id}")
                                 .build(favourite.getId()))
                         .body(favourite));

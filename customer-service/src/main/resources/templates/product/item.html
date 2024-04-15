@@ -34,7 +34,7 @@
             <label><input type="radio" name="rating" value="5"> 5</label>
             <br>
             <label>
-                <textarea name="text"></textarea>
+                <textarea name="text" data-th-text="${payload?.text}"></textarea>
             </label><br>
 <!--            <input type="hidden" name="isFavourite" value="true" data-th-if="${isFavourite}"/>-->
             <button type="submit">Send</button>

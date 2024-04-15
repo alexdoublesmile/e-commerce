@@ -93,9 +93,8 @@ public class ProductController {
     @PostMapping("/{id:\\d+}/add-review")
     public Mono<String> addReview(
             @PathVariable("id") Long productId,
-            @Validated CreateReviewDto dto,
+            CreateReviewDto dto,
             Model model) {
-
         return reviewClient.addReview(productId, dto)
                 .thenReturn("redirect:/customer/products/%d".formatted(productId))
                 .onErrorResume(ClientBadRequestException.class, ex -> {
