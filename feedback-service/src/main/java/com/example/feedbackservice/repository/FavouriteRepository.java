@@ -1,16 +1,14 @@
 package com.example.feedbackservice.repository;
 
 import com.example.feedbackservice.model.entity.Favourite;
-import reactor.core.publisher.Flux;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
-public interface FavouriteRepository {
+import java.util.UUID;
 
-    Flux<Favourite> findAll();
+public interface FavouriteRepository extends ReactiveCrudRepository<Favourite, UUID> {
 
     Mono<Favourite> findByProductId(Long productId);
-
-    Mono<Favourite> save(Favourite favourite);
 
     Mono<Void> deleteByProductId(Long id);
 }
