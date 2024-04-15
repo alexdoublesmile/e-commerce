@@ -1,27 +1,30 @@
 package com.example.customerservice.controller;
 
-import com.example.customerservice.client.FeedbackClient;
+import com.example.customerservice.client.FavouriteClient;
 import com.example.customerservice.client.ProductClient;
+import com.example.customerservice.client.ReviewClient;
+import com.example.customerservice.exception.ClientBadRequestException;
 import com.example.customerservice.model.dto.CreateReviewDto;
 import com.example.customerservice.model.entity.Favourite;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
 
+@Log4j2
 @Controller
 @RequestMapping("/customer/products")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductClient productClient;
-    private final FeedbackClient feedbackClient;
+    private final ReviewClient reviewClient;
+    private final FavouriteClient favouriteClient;
 
     @GetMapping("/list")
     public Mono<String> getProductListPage(
@@ -43,7 +46,7 @@ public class ProductController {
 
         model.addAttribute("filter", filter);
 
-        return feedbackClient.findAllFavourite()
+        return favouriteClient.findAllFavourite()
                 .map(Favourite::productId)
                 .collectList()
                 .flatMap(favourites -> productClient.findAll(filter)
@@ -63,9 +66,9 @@ public class ProductController {
         return productClient.findById(id)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("customer.products.error.not_found")))
                 .doOnNext(product -> model.addAttribute("product", product))
-                .then(feedbackClient.findFavouriteByProductId(id)
+                .then(favouriteClient.findFavouriteByProductId(id)
                         .doOnNext(product -> model.addAttribute("isFavourite", true)))
-                .then(feedbackClient.findAllReviewByProductId(id)
+                .then(reviewClient.findAllReviewByProductId(id)
                         .collectList()
                         .doOnNext(reviewList -> model.addAttribute("reviewList", reviewList)))
                 .thenReturn("product/item");
@@ -73,13 +76,17 @@ public class ProductController {
 
     @PostMapping("/{id:\\d+}/add-to-favourites")
     public Mono<String> addToFavourite(@PathVariable("id") Long id) {
-        return feedbackClient.addFavourite(id)
-                .thenReturn("redirect:/customer/products/%d".formatted(id));
+        return favouriteClient.addFavourite(id)
+                .thenReturn("redirect:/customer/products/%d".formatted(id))
+                .onErrorResume(ex -> {
+                    log.error(ex.getMessage(), ex);
+                    return Mono.just("redirect:/customer/products/%d".formatted(id));
+                });
     }
 
     @PostMapping("/{id:\\d+}/remove-from-favourites")
     public Mono<String> removeFromFavourite(@PathVariable("id") Long id) {
-        return feedbackClient.removeFavourite(id)
+        return favouriteClient.removeFavourite(id)
                 .thenReturn("redirect:/customer/products/%d".formatted(id));
     }
 
@@ -87,21 +94,16 @@ public class ProductController {
     public Mono<String> addReview(
             @PathVariable("id") Long productId,
             @Validated CreateReviewDto dto,
-            BindingResult bindingResult,
             Model model) {
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("payload", dto);
-            model.addAttribute("errors", bindingResult.getAllErrors()
-                    .stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList());
+        return reviewClient.addReview(productId, dto)
+                .thenReturn("redirect:/customer/products/%d".formatted(productId))
+                .onErrorResume(ClientBadRequestException.class, ex -> {
+                    model.addAttribute("payload", dto);
+                    model.addAttribute("errors", ex.getErrors());
 
-            return getProductPage(productId, model);
-        } else {
-            return feedbackClient.addReview(productId, dto)
-                    .thenReturn("redirect:/customer/products/%d".formatted(productId));
-        }
+                    return getProductPage(productId, model);
+                });
     }
 
     @ExceptionHandler(NoSuchElementException.class)

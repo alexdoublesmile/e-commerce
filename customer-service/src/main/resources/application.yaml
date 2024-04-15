@@ -6,3 +6,7 @@ spring:
 commerce-service:
   host: ${COMMERCE_SERVICE_HOST:http://localhost}
   port: ${COMMERCE_SERVICE_PORT:8080}
+
+feedback-service:
+  host: ${FEEDBACK_SERVICE_HOST:http://localhost}
+  port: ${FEEDBACK_SERVICE_PORT:8084}

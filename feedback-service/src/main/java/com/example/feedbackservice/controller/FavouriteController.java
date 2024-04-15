@@ -28,12 +28,13 @@ public class FavouriteController {
         return favouriteService.findByProductId(productId);
     }
 
-    @PostMapping("/by-product/{productId}")
+    @PostMapping
     public Mono<ResponseEntity<Favourite>> addByProductId(
             @Validated @RequestBody Mono<CreateFavouriteDto> dto,
             UriComponentsBuilder uriComponentsBuilder) {
         return dto
                 .flatMap(payload -> favouriteService.add(payload.productId()))
+                .log()
                 .map(favourite -> ResponseEntity.created(uriComponentsBuilder.replacePath("/api/v1/favourites/{id}")
                                 .build(favourite.getId()))
                         .body(favourite));

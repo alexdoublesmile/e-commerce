@@ -1,6 +1,7 @@
 package com.example.feedbackservice.repository;
 
 import com.example.feedbackservice.model.entity.Favourite;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -8,6 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Log4j2
 @Repository
 public class InMemoryFavouriteRepository implements FavouriteRepository {
 
@@ -34,6 +36,7 @@ public class InMemoryFavouriteRepository implements FavouriteRepository {
 
     @Override
     public Flux<Favourite> findAll() {
+        log.info("Request to DB for:{}", favouriteList);
         return Flux.fromIterable(favouriteList);
     }
 }
