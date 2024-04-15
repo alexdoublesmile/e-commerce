@@ -8,10 +8,13 @@ import com.example.customerservice.model.dto.CreateReviewDto;
 import com.example.customerservice.model.entity.Favourite;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
@@ -109,5 +112,12 @@ public class ProductController {
     public String handleNoSuchElementException(NoSuchElementException exception, Model model) {
         model.addAttribute("error", exception.getMessage());
         return "error/404";
+    }
+
+    @ModelAttribute
+    public Mono<CsrfToken> loadCsrf(ServerWebExchange exchange) {
+        final Mono<CsrfToken> tokenMono = exchange.getAttribute(CsrfToken.class.getName());
+        return tokenMono.doOnSuccess(token ->
+                exchange.getAttributes().put(CsrfRequestDataValueProcessor.DEFAULT_CSRF_ATTR_NAME, token));
     }
 }

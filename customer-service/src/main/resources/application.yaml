@@ -2,6 +2,20 @@ server:
   port: 8083
 spring:
   application.name: customer-service
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8082/realms/commerce}
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: customer-app
+            client-secret: ${KEYCLOAK_SECRET}
+            scope:
+              - openid
+              - view_products
 
 commerce-service:
   host: ${COMMERCE_SERVICE_HOST:http://localhost}
