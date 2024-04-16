@@ -15,19 +15,19 @@ public class FavouriteService {
 
     private final FavouriteRepository favouriteRepository;
 
-    public Mono<Favourite> add(Long id) {
-        return favouriteRepository.save(new Favourite(UUID.randomUUID(), id));
+    public Mono<Favourite> add(Long productId, String userId) {
+        return favouriteRepository.save(new Favourite(UUID.randomUUID(), productId, userId));
     }
 
-    public Mono<Void> remove(Long id) {
-        return favouriteRepository.deleteByProductId(id);
+    public Mono<Void> remove(Long productId, String userId) {
+        return favouriteRepository.deleteByProductIdAndUserId(productId, userId);
     }
 
-    public Mono<Favourite> findByProductId(Long productId) {
-        return favouriteRepository.findByProductId(productId);
+    public Mono<Favourite> findByProductId(Long productId, String userId) {
+        return favouriteRepository.findByProductIdAndUserId(productId, userId);
     }
 
-    public Flux<Favourite> findAll() {
-        return favouriteRepository.findAll();
+    public Flux<Favourite> findAll(String userId) {
+        return favouriteRepository.findAllByUserId(userId);
     }
 }

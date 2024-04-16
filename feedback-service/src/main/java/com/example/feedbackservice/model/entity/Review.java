@@ -20,4 +20,6 @@ public class Review {
     private Integer rating;
 
     private String text;
+
+    private String userId;
 }

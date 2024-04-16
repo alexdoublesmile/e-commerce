@@ -15,4 +15,5 @@ public class Favourite {
     @Id
     private UUID id;
     private Long productId;
+    private String userId;
 }

@@ -1,6 +1,5 @@
 package com.example.feedbackservice.service;
 
-import com.example.feedbackservice.model.dto.CreateReviewDto;
 import com.example.feedbackservice.model.entity.Review;
 import com.example.feedbackservice.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +15,9 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public Mono<Review> add(Long productId, CreateReviewDto dto) {
+    public Mono<Review> add(Long productId, Integer rating, String text, String userId) {
         return reviewRepository.save(
-                new Review(UUID.randomUUID(), productId, dto.rating(), dto.text()));
+                new Review(UUID.randomUUID(), productId, rating, text, userId));
     }
 
     public Flux<Review> findAllByProductId(Long productId) {
