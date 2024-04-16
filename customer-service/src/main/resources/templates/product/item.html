@@ -40,6 +40,7 @@
             <button type="submit">Send</button>
         </form>
         <div data-th-each="review : ${reviewList}">
+            <h3>[[${review.userId}]]*</h3>
             <h3>[[${review.rating}]]*</h3>
             <p data-th-text="${review.text}"></p>
         </div>
