@@ -8,11 +8,12 @@ import com.example.customerservice.model.dto.CreateReviewDto;
 import com.example.customerservice.model.entity.Favourite;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -109,8 +110,9 @@ public class ProductController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public String handleNoSuchElementException(NoSuchElementException exception, Model model) {
+    public String handleNoSuchElementException(NoSuchElementException exception, Model model, ServerHttpResponse response) {
         model.addAttribute("error", exception.getMessage());
+        response.setStatusCode(HttpStatus.NOT_FOUND);
         return "error/404";
     }
 

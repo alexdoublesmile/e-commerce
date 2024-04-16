@@ -1,4 +1,6 @@
 package com.example.feedbackservice.model.dto;
 
-public record CreateFavouriteDto(Long productId) {
+import jakarta.validation.constraints.NotNull;
+
+public record CreateFavouriteDto(@NotNull Long productId) {
 }
