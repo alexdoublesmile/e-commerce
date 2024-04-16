@@ -11,7 +11,7 @@ spring:
             user-name-attribute: preferred_username
         registration:
           keycloak:
-            client-id: commerce-admin
+            client-id: admin-app
             client-secret: ${KEYCLOAK_SECRET}
             scope:
               - openid
