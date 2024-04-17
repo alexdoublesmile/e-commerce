@@ -11,16 +11,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SecurityScheme(
         name = "keycloak",
         type = SecuritySchemeType.OAUTH2,
-        flows = @OAuthFlows(authorizationCode = @OAuthFlow(
-                authorizationUrl = "${keycloak.uri}/realms/commerce/protocol/openid-connect/auth",
-                tokenUrl = "${keycloak.uri}/realms/commerce/protocol/openid-connect/token",
-                scopes = {
-                        @OAuthScope(name = "openid"),
-                        @OAuthScope(name = "view_products"),
-                        @OAuthScope(name = "edit_products"),
-                        @OAuthScope(name = "microprofile-jwt")
-                }
-        ))
+        flows = @OAuthFlows(
+                authorizationCode = @OAuthFlow(
+                        authorizationUrl = "${keycloak.uri}/realms/commerce/protocol/openid-connect/auth",
+                        tokenUrl = "${keycloak.uri}/realms/commerce/protocol/openid-connect/token",
+                        scopes = {
+                                @OAuthScope(name = "openid"),
+                                @OAuthScope(name = "view_products"),
+                                @OAuthScope(name = "edit_products"),
+                                @OAuthScope(name = "microprofile-jwt")
+                        }
+                )
+        )
 )
 @SpringBootApplication
 public class CommerceServiceApplication {

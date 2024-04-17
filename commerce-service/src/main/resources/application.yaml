@@ -25,7 +25,7 @@ commerce-service:
 springdoc:
   swagger-ui:
     oauth:
-      client-id: swagger-ui
+      client-id: commerce-swagger
       use-pkce-with-authorization-code-grant: true
 keycloak:
   uri: http://localhost:8082

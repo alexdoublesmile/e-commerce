@@ -3,6 +3,8 @@ package com.example.feedbackservice.controller;
 import com.example.feedbackservice.model.dto.CreateReviewDto;
 import com.example.feedbackservice.model.entity.Review;
 import com.example.feedbackservice.service.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -19,6 +21,9 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @Operation(
+            security = @SecurityRequirement(name = "keycloak")
+    )
     @GetMapping
     public Flux<Review> findAll(@RequestParam Long productId) {
         return reviewService.findAllByProductId(productId);
