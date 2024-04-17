@@ -20,13 +20,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(req -> req
-                        .anyRequest().permitAll())
-//                        .requestMatchers(HttpMethod.POST, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
-//                        .requestMatchers(HttpMethod.PUT, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
-//                        .requestMatchers(HttpMethod.PATCH, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
-//                        .requestMatchers(HttpMethod.DELETE, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
-//                        .requestMatchers(HttpMethod.GET, commerceServiceProductUri + "/**").hasAuthority("SCOPE_view_products")
-//                        .anyRequest().denyAll())
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.PUT, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.PATCH, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.DELETE, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers(HttpMethod.GET, commerceServiceProductUri + "/**").hasAuthority("SCOPE_view_products")
+                        .anyRequest().denyAll())
                 .csrf(CsrfConfigurer::disable)
                 // don't restore http sessions by servlet session
                 .sessionManagement(sessionManagement ->

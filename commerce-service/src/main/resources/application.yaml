@@ -22,3 +22,10 @@ spring:
 
 commerce-service:
   product.uri: /api/v1/products
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: swagger-ui
+      use-pkce-with-authorization-code-grant: true
+keycloak:
+  uri: http://localhost:8082

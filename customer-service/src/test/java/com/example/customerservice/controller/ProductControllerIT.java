@@ -58,7 +58,7 @@ class ProductControllerIT {
                         ]""")));
     }
 
-    // TODO: 16.04.2024  fix test 
+    // TODO: 16.04.2024  fix test
 //    @Test
     void getProductPage_ProductExists_ReturnsProductPage() {
         // given
