@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
                         .requestMatchers(HttpMethod.PATCH, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
                         .requestMatchers(HttpMethod.DELETE, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, commerceServiceProductUri + "/**").hasAuthority("SCOPE_view_products")
                         .anyRequest().denyAll())
                 .csrf(CsrfConfigurer::disable)

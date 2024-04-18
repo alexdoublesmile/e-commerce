@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <spring-boot.version>3.2.4</spring-boot.version>
+        <spring-admin.version>3.2.2</spring-admin.version>
         <springdoc.version>2.3.0</springdoc.version>
     </properties>
     <dependencies>
@@ -76,6 +77,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-admin.version}</version>
         </dependency>
     </dependencies>
 

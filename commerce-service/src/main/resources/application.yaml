@@ -19,6 +19,14 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8082/realms/commerce}
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: commerce-service
+          service-host-type: ip
+        url: http://localhost:8085
 
 commerce-service:
   product.uri: /api/v1/products
@@ -29,3 +37,13 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 keycloak:
   uri: http://localhost:8082
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
