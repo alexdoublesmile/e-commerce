@@ -25,7 +25,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
                         .requestMatchers(HttpMethod.PATCH, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
                         .requestMatchers(HttpMethod.DELETE, commerceServiceProductUri + "/**").hasAuthority("SCOPE_edit_products")
-                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/actuator/**").hasAuthority("SCOPE_metrics")
                         .requestMatchers(HttpMethod.GET, commerceServiceProductUri + "/**").hasAuthority("SCOPE_view_products")
                         .anyRequest().denyAll())
                 .csrf(CsrfConfigurer::disable)
@@ -34,6 +34,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
                         .jwt(Customizer.withDefaults()))
+                .oauth2Client(Customizer.withDefaults())
                 .build();
     }
 }

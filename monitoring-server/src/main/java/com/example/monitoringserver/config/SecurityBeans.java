@@ -31,12 +31,25 @@ public class SecurityBeans {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Priority(0)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .oauth2Client(Customizer.withDefaults())
-                .authorizeHttpRequests(customizer -> customizer.anyRequest().permitAll())
+                .securityMatcher(request -> Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+                        .map(header -> header.startsWith("Bearer ")).orElse(false))
+                .oauth2ResourceServer(customizer -> customizer.jwt(Customizer.withDefaults()))
+                .authorizeHttpRequests(customizer -> customizer.anyRequest().hasAuthority("SCOPE_metrics_server"))
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(CsrfConfigurer::disable)
+                .build();
+    }
+
+    @Bean
+    @Priority(1)
+    public SecurityFilterChain uiSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .oauth2Client(Customizer.withDefaults())
+                .oauth2Login(Customizer.withDefaults())
+                .authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
                 .build();
     }
 }

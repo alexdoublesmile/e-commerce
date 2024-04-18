@@ -4,6 +4,9 @@ spring:
   application.name: monitoring-server
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/commerce
       client:
         provider:
           keycloak:
@@ -13,6 +16,13 @@ spring:
             authorization-grant-type: client_credentials
             scope:
               - metrics
+            client-id: monitoring-service
+            client-secret: CR0BZSwKmNk7SwHtLKrGRlKgaV22RVa9
+          login:
+            provider: keycloak
+            scope:
+              - metrics
+              - openid
             client-id: monitoring-service
             client-secret: CR0BZSwKmNk7SwHtLKrGRlKgaV22RVa9
 
