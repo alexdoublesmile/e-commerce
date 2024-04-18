@@ -1,0 +1,71 @@
+scrape_configs:
+  - job_name: monitoring_service
+    static_configs:
+      - targets: ["http://localhost:8085"]
+        labels:
+          application: monitoring-service
+    metrics_path: /actuator/prometheus
+    oauth2:
+      client_id: victoria-metrics
+      client_secret: bfyOEnZaGJ5WWaL57cyuwZWPn0vJxNmx
+      token_url: http://localhost:8082/realms/commerce/protocol/openid-connect/token
+      scopes:
+        - metrics
+      endpoint_params:
+        grant_type: client_credentials
+  - job_name: commerce_service
+    static_configs:
+      - targets: ["http://localhost:8080"]
+        labels:
+          application: commerce-service
+    metrics_path: /actuator/prometheus
+    oauth2:
+      client_id: victoria-metrics
+      client_secret: bfyOEnZaGJ5WWaL57cyuwZWPn0vJxNmx
+      token_url: http://localhost:8082/realms/commerce/protocol/openid-connect/token
+      scopes:
+        - metrics
+      endpoint_params:
+        grant_type: client_credentials
+  - job_name: feedback_service
+    static_configs:
+      - targets: ["http://localhost:8084"]
+        labels:
+          application: feedback-service
+    metrics_path: /actuator/prometheus
+    oauth2:
+      client_id: victoria-metrics
+      client_secret: bfyOEnZaGJ5WWaL57cyuwZWPn0vJxNmx
+      token_url: http://localhost:8082/realms/commerce/protocol/openid-connect/token
+      scopes:
+        - metrics
+      endpoint_params:
+        grant_type: client_credentials
+  - job_name: customer_service
+    static_configs:
+      - targets: ["http://localhost:8083"]
+        labels:
+          application: customer-service
+    metrics_path: /actuator/prometheus
+    oauth2:
+      client_id: victoria-metrics
+      client_secret: bfyOEnZaGJ5WWaL57cyuwZWPn0vJxNmx
+      token_url: http://localhost:8082/realms/commerce/protocol/openid-connect/token
+      scopes:
+        - metrics
+      endpoint_params:
+        grant_type: client_credentials
+  - job_name: commerce_admin
+    static_configs:
+      - targets: ["http://localhost:8081"]
+        labels:
+          application: commerce-admin
+    metrics_path: /actuator/prometheus
+    oauth2:
+      client_id: victoria-metrics
+      client_secret: bfyOEnZaGJ5WWaL57cyuwZWPn0vJxNmx
+      token_url: http://localhost:8082/realms/commerce/protocol/openid-connect/token
+      scopes:
+        - metrics
+      endpoint_params:
+        grant_type: client_credentials
