@@ -6,25 +6,25 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/commerce
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:1234/realms/commerce}
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8082/realms/commerce
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:1234/realms/commerce}
         registration:
           keycloak:
             authorization-grant-type: client_credentials
             scope:
               - metrics
             client-id: monitoring-service
-            client-secret: c1ddS5OqAxzTmj5bj2pMJ6FNo5piaZkb
+            client-secret: ${KEYCLOAK_SECRET}
           login:
             provider: keycloak
             scope:
               - metrics
               - openid
             client-id: monitoring-service
-            client-secret: c1ddS5OqAxzTmj5bj2pMJ6FNo5piaZkb
+            client-secret: ${KEYCLOAK_SECRET}
 management:
   endpoints:
     web:

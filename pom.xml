@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>commerce-admin</module>
+        <module>commerce-app</module>
         <module>commerce-service</module>
     </modules>
 

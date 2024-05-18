@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8082
 spring:
   application.name: commerce-service
   datasource:
@@ -18,18 +18,18 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8082/realms/commerce}
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:1234/realms/commerce}
       client:
         registration:
           keycloak:
             client-id: commerce-service-metrics-client
-            client-secret: wEPZQNj4U3ktaylD3w52axMEFq7g62QH
+            client-secret: ${KEYCLOAK_SECRET}
             authorization-grant-type: client_credentials
             scope:
               - metrics_server
         provider:
           keycloak:
-            issuer-uri: http://localhost:8082/realms/commerce
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:1234/realms/commerce}
   boot:
     admin:
       client:
@@ -47,7 +47,7 @@ springdoc:
       client-id: commerce-swagger
       use-pkce-with-authorization-code-grant: true
 keycloak:
-  uri: http://localhost:8082
+  uri: http://localhost:1234
 management:
   health:
     livenessstate:
