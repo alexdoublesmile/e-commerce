@@ -32,7 +32,7 @@ public class ProductController {
     // TODO: 08.04.2024 add complex filtration
     // TODO: 08.04.2024 add pagination, sorting etc.
     @GetMapping
-    public List<Product> findAll(@RequestParam(name = "filter") String filter) {
+    public List<Product> findAll(@RequestParam(name = "filter", defaultValue = "") String filter) {
         return productService.findAll(filter);
     }
 

@@ -36,6 +36,7 @@ public class SecurityConfig {
         final OidcUserService oidcUserService = new OidcUserService();
         return userRequest -> {
             final OidcUser oidcUser = oidcUserService.loadUser(userRequest);
+            // add roles from 'groups' claim (microprofile-jwt scope) to default roles after auth
             final List<GrantedAuthority> authorityList = Stream.concat(
                     oidcUser.getAuthorities().stream(),
                     Optional.ofNullable(oidcUser.getClaimAsStringList("groups"))

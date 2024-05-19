@@ -22,7 +22,7 @@ public class ProductController {
     private final ProductClient productClient;
 
     @GetMapping
-    public String findAll(@RequestParam(name = "filter") String filter, Model model) {
+    public String findAll(@RequestParam(name = "filter", defaultValue = "") String filter, Model model) {
         model.addAttribute("productList", productClient.findAll(filter));
         model.addAttribute("filter", filter);
         return "product/list";
